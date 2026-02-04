@@ -1,0 +1,58 @@
+<div class="task-card" [class.task-editing]="isEditing">
+  <div class="task-header" *ngIf="!isEditing">
+    <h4 class="task-title">{{ task.title }}</h4>
+    <div class="task-actions">
+      <button class="action-btn edit-btn" (click)="startEdit()" title="Edit task">✎</button>
+      <button class="action-btn delete-btn" (click)="deleteTask()" title="Delete task">✕</button>
+    </div>
+  </div>
+
+  <div class="task-edit" *ngIf="isEditing">
+    <input type="text" 
+           [(ngModel)]="editingTask.title" 
+           class="edit-input"
+           placeholder="Task title">
+    <textarea [(ngModel)]="editingTask.description" 
+              class="edit-textarea"
+              placeholder="Task description"></textarea>
+    <div class="edit-row">
+      <select [(ngModel)]="editingTask.status" class="edit-select">
+        <option [value]="0">To Do</option>
+        <option [value]="1">In Progress</option>
+        <option [value]="2">Done</option>
+      </select>
+      <select [(ngModel)]="editingTask.priority" class="edit-select">
+        <option [value]="0">Low</option>
+        <option [value]="1">Medium</option>
+        <option [value]="2">High</option>
+      </select>
+    </div>
+    <input type="date" 
+           [(ngModel)]="editingTask.dueDate" 
+           class="edit-input">
+    <div class="edit-actions">
+      <button class="btn btn-success" (click)="saveTask()">Save</button>
+      <button class="btn btn-cancel" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="task-content" *ngIf="!isEditing">
+    <p class="task-description" *ngIf="task.description">{{ task.description }}</p>
+    
+    <div class="task-meta">
+      <span class="priority-badge" [class]="getPriorityClass()">
+        {{ priorityLabels[task.priority] }}
+      </span>
+      <span class="status-badge" [class]="getStatusClass()">
+        {{ statusLabels[task.status] }}
+      </span>
+      <span class="due-date" *ngIf="task.dueDate">
+        📅 {{ formatDate(task.dueDate) }}
+      </span>
+    </div>
+
+    <button class="status-btn" (click)="changeStatus()" title="Click to change status">
+      Status: {{ statusLabels[task.status] }}
+    </button>
+  </div>
+</div>

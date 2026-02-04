@@ -1,0 +1,102 @@
+<div class="task-board-container">
+  <div class="board-sidebar">
+    <h2>Boards</h2>
+    <div class="board-list">
+      <div *ngFor="let board of boards" 
+           [class.board-item-selected]="selectedBoard?.id === board.id"
+           class="board-item"
+           (click)="selectBoard(board)">
+        {{ board.name }}
+      </div>
+    </div>
+    
+    <div class="add-board-section">
+      <h3>Create New Board</h3>
+      <input type="text" 
+             [(ngModel)]="newBoardName" 
+             placeholder="Board name"
+             class="input-field">
+      <textarea [(ngModel)]="newBoardDescription" 
+                placeholder="Description"
+                class="textarea-field"></textarea>
+      <button (click)="createBoard()" class="btn btn-primary">Create Board</button>
+    </div>
+  </div>
+
+  <div class="board-content">
+    <div *ngIf="selectedBoard" class="board-main">
+      <div class="board-header">
+        <div *ngIf="editingBoardId === selectedBoard.id" class="board-edit">
+          <input type="text" 
+                 [(ngModel)]="editingBoardName" 
+                 class="input-field"
+                 placeholder="Board name">
+          <textarea [(ngModel)]="editingBoardDescription" 
+                    class="textarea-field"
+                    placeholder="Description"></textarea>
+          <div class="button-group">
+            <button (click)="updateBoard()" class="btn btn-success">Save</button>
+            <button (click)="cancelEditBoard()" class="btn btn-secondary">Cancel</button>
+          </div>
+        </div>
+        <div *ngIf="editingBoardId !== selectedBoard.id" class="board-title">
+          <h1>{{ selectedBoard.name }}</h1>
+          <p class="board-description">{{ selectedBoard.description }}</p>
+          <div class="board-actions">
+            <button (click)="startEditBoard(selectedBoard)" class="btn btn-secondary">Edit</button>
+            <button (click)="deleteBoard(selectedBoard.id)" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+        <button (click)="errorMessage = ''" class="close-btn">×</button>
+      </div>
+
+      <div class="tasks-section">
+        <div class="task-status-columns">
+          <div class="task-column">
+            <h3>To Do</h3>
+            <div class="tasks-list">
+              <app-task-item 
+                *ngFor="let task of selectedBoard.tasks | filter:0"
+                [task]="task"
+                (taskUpdated)="onTaskUpdated($event)"
+                (taskDeleted)="onTaskDeleted($event)">
+              </app-task-item>
+            </div>
+          </div>
+
+          <div class="task-column">
+            <h3>In Progress</h3>
+            <div class="tasks-list">
+              <app-task-item 
+                *ngFor="let task of selectedBoard.tasks | filter:1"
+                [task]="task"
+                (taskUpdated)="onTaskUpdated($event)"
+                (taskDeleted)="onTaskDeleted($event)">
+              </app-task-item>
+            </div>
+          </div>
+
+          <div class="task-column">
+            <h3>Done</h3>
+            <div class="tasks-list">
+              <app-task-item 
+                *ngFor="let task of selectedBoard.tasks | filter:2"
+                [task]="task"
+                (taskUpdated)="onTaskUpdated($event)"
+                (taskDeleted)="onTaskDeleted($event)">
+              </app-task-item>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!selectedBoard" class="no-board-selected">
+      <p>Select a board from the sidebar or create a new one</p>
+    </div>
+  </div>
+</div>
