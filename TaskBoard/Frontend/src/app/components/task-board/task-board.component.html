@@ -10,8 +10,30 @@
       </div>
     </div>
     
+    <div class="add-task-section-sidebar" *ngIf="selectedBoard">
+      <h3 (click)="showAddTaskForm = !showAddTaskForm">
+        ➕ Add New Task 
+        <span style="float: right;">{{ showAddTaskForm ? '▼' : '▶' }}</span>
+      </h3>
+      <div *ngIf="showAddTaskForm" class="task-form-content">
+        <input type="text" 
+               [(ngModel)]="newTaskTitle" 
+               placeholder="Task title"
+               class="input-field">
+        <textarea [(ngModel)]="newTaskDescription" 
+                  placeholder="Task description (optional)"
+                  class="textarea-field"></textarea>
+        <select [(ngModel)]="newTaskPriority" class="select-field">
+          <option value="0">Low Priority</option>
+          <option value="1">Medium Priority</option>
+          <option value="2">High Priority</option>
+        </select>
+        <button (click)="createTask()" class="btn btn-primary">Add Task</button>
+      </div>
+    </div>
+
     <div class="add-board-section">
-      <h3>Create New Board</h3>
+      <h3>📋 Create New Board</h3>
       <input type="text" 
              [(ngModel)]="newBoardName" 
              placeholder="Board name"
@@ -52,25 +74,6 @@
       <div class="error-message" *ngIf="errorMessage">
         {{ errorMessage }}
         <button (click)="errorMessage = ''" class="close-btn">×</button>
-      </div>
-
-      <div class="add-task-section">
-        <h3>Add New Task</h3>
-        <input type="text" 
-               [(ngModel)]="newTaskTitle" 
-               placeholder="Task title"
-               class="input-field">
-        <textarea [(ngModel)]="newTaskDescription" 
-                  placeholder="Task description (optional)"
-                  class="textarea-field"></textarea>
-        <div class="task-inputs">
-          <select [(ngModel)]="newTaskPriority" class="select-field">
-            <option value="0">Low Priority</option>
-            <option value="1">Medium Priority</option>
-            <option value="2">High Priority</option>
-          </select>
-          <button (click)="createTask()" class="btn btn-primary">Add Task</button>
-        </div>
       </div>
 
       <div class="tasks-section">

@@ -29,6 +29,7 @@ export class TaskBoardComponent implements OnInit {
   newTaskTitle: string = '';
   newTaskDescription: string = '';
   newTaskPriority: number = 1;
+  showAddTaskForm: boolean = false;
 
   constructor(private boardService: BoardService, private taskService: TaskService) { }
 
