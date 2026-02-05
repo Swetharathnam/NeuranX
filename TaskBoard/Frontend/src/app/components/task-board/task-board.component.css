@@ -234,6 +234,36 @@
   gap: 10px;
 }
 
+.add-task-section {
+  background-color: #ecf0f1;
+  padding: 20px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border: 1px solid #bdc3c7;
+}
+
+.add-task-section h3 {
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.task-inputs {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.select-field {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+}
+
 @media (max-width: 768px) {
   .task-board-container {
     flex-direction: column;

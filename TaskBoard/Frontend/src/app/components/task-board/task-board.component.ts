@@ -26,6 +26,9 @@ export class TaskBoardComponent implements OnInit {
   isLoadingBoards: boolean = false;
   isLoadingTasks: boolean = false;
   errorMessage: string = '';
+  newTaskTitle: string = '';
+  newTaskDescription: string = '';
+  newTaskPriority: number = 1;
 
   constructor(private boardService: BoardService, private taskService: TaskService) { }
 
@@ -163,5 +166,41 @@ export class TaskBoardComponent implements OnInit {
     if (this.selectedBoard) {
       this.selectedBoard.tasks = this.selectedBoard.tasks.filter(t => t.id !== taskId);
     }
+  }
+
+  createTask(): void {
+    if (!this.selectedBoard) {
+      this.errorMessage = 'Please select a board first';
+      return;
+    }
+
+    if (!this.newTaskTitle.trim()) {
+      this.errorMessage = 'Task title is required';
+      return;
+    }
+
+    const newTask = {
+      title: this.newTaskTitle,
+      description: this.newTaskDescription,
+      status: 0, // TaskStatus.Todo
+      priority: this.newTaskPriority,
+      boardId: this.selectedBoard.id
+    };
+
+    this.taskService.createTask(newTask).subscribe({
+      next: (createdTask: any) => {
+        if (this.selectedBoard) {
+          this.selectedBoard.tasks.push(createdTask);
+        }
+        this.newTaskTitle = '';
+        this.newTaskDescription = '';
+        this.newTaskPriority = 1;
+        this.errorMessage = '';
+      },
+      error: (error: any) => {
+        this.errorMessage = 'Failed to create task';
+        console.error('Error creating task:', error);
+      }
+    });
   }
 }
