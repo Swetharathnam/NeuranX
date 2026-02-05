@@ -17,14 +17,14 @@
               placeholder="Task description"></textarea>
     <div class="edit-row">
       <select [(ngModel)]="editingTask.status" class="edit-select">
-        <option [value]="0">To Do</option>
-        <option [value]="1">In Progress</option>
-        <option [value]="2">Done</option>
+        <option [ngValue]="0">To Do</option>
+        <option [ngValue]="1">In Progress</option>
+        <option [ngValue]="2">Done</option>
       </select>
       <select [(ngModel)]="editingTask.priority" class="edit-select">
-        <option [value]="0">Low</option>
-        <option [value]="1">Medium</option>
-        <option [value]="2">High</option>
+        <option [ngValue]="0">Low</option>
+        <option [ngValue]="1">Medium</option>
+        <option [ngValue]="2">High</option>
       </select>
     </div>
     <input type="date" 

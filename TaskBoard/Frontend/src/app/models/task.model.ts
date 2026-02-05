@@ -16,10 +16,10 @@ export interface TaskItem {
   description: string;
   status: TaskStatus;
   priority: TaskPriority;
-  dueDate?: Date;
+  dueDate?: Date | string;
   boardId: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 export interface CreateTaskRequest {
@@ -27,7 +27,7 @@ export interface CreateTaskRequest {
   description: string;
   status: TaskStatus;
   priority: TaskPriority;
-  dueDate?: Date;
+  dueDate?: Date | string;
   boardId: number;
 }
 
@@ -36,5 +36,5 @@ export interface UpdateTaskRequest {
   description: string;
   status: TaskStatus;
   priority: TaskPriority;
-  dueDate?: Date;
+  dueDate?: Date | string;
 }

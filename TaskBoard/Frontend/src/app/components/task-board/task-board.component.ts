@@ -158,7 +158,12 @@ export class TaskBoardComponent implements OnInit {
     if (this.selectedBoard) {
       const index = this.selectedBoard.tasks.findIndex(t => t.id === updatedTask.id);
       if (index > -1) {
-        this.selectedBoard.tasks[index] = updatedTask;
+        // Create a new array reference to trigger Angular change detection
+        this.selectedBoard.tasks = [
+          ...this.selectedBoard.tasks.slice(0, index),
+          updatedTask,
+          ...this.selectedBoard.tasks.slice(index + 1)
+        ];
       }
     }
   }
@@ -191,7 +196,8 @@ export class TaskBoardComponent implements OnInit {
     this.taskService.createTask(newTask).subscribe({
       next: (createdTask: any) => {
         if (this.selectedBoard) {
-          this.selectedBoard.tasks.push(createdTask);
+          // Create a new array reference to trigger Angular change detection
+          this.selectedBoard.tasks = [...this.selectedBoard.tasks, createdTask];
         }
         this.newTaskTitle = '';
         this.newTaskDescription = '';
@@ -199,7 +205,14 @@ export class TaskBoardComponent implements OnInit {
         this.errorMessage = '';
       },
       error: (error: any) => {
-        this.errorMessage = 'Failed to create task';
+        // Show more detailed error message from backend
+        if (error.error && typeof error.error === 'string') {
+          this.errorMessage = error.error;
+        } else if (error.message) {
+          this.errorMessage = error.message;
+        } else {
+          this.errorMessage = 'Failed to create task';
+        }
         console.error('Error creating task:', error);
       }
     });

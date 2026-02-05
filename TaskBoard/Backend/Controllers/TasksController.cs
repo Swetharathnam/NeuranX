@@ -129,6 +129,15 @@ namespace TaskBoard.Controllers
         {
             try
             {
+                // Check model state for validation errors
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+                    var errorMessage = string.Join(", ", errors);
+                    _logger.LogWarning($"Model validation failed: {errorMessage}");
+                    return BadRequest($"Validation failed: {errorMessage}");
+                }
+
                 if (string.IsNullOrWhiteSpace(updateTaskDto.Title))
                 {
                     return BadRequest("Task title is required");

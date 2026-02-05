@@ -47,7 +47,7 @@ Frontend/
 - .NET 6 or later SDK
 - Node.js 18+
 - Angular CLI 17+
-- SQLite (included) or SQL Server
+- PostgreSQL 14+ (or SQL Server/SQLite)
 
 ## Getting Started
 
@@ -118,15 +118,12 @@ The application will be available at `http://localhost:4200`
 
 ## Database
 
-### Using SQLite (Default)
-The application uses SQLite by default with the database file at `taskboard.db`. No additional setup required.
-
-### Using SQL Server
-Update the connection string in `appsettings.json`:
+### Using PostgreSQL (Active)
+The application is currently configured to use PostgreSQL. Update the connection string in `appsettings.json`:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=TaskBoard;Trusted_Connection=true;"
+    "DefaultConnection": "Host=localhost;Port=5432;Database=taskboard;Username=postgres;Password=your_password;"
   }
 }
 ```
@@ -135,6 +132,9 @@ Then apply migrations:
 ```bash
 dotnet ef database update
 ```
+
+### Using SQLite or SQL Server
+The application supports SQLite and SQL Server as alternatives. Update the `ConnectionStrings` in `appsettings.json` accordingly. For SQLite, remove the connection string to fallback to default, or specify a file path. For SQL Server, provide a standard SQL Server connection string.
 
 ## Architecture Highlights
 
@@ -223,14 +223,6 @@ dotnet publish -c Release
 ```bash
 ng build --configuration production
 ```
-
-## Known Limitations
-
-- No authentication/authorization implemented
-- No real-time updates (would require SignalR)
-- File uploads not implemented
-- No pagination for large datasets
-- No caching implemented
 
 ## Future Enhancements
 

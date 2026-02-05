@@ -50,7 +50,7 @@ export class TaskItemComponent implements OnInit {
       description: this.task.description,
       status: this.task.status,
       priority: this.task.priority,
-      dueDate: this.task.dueDate
+      dueDate: this.task.dueDate ? new Date(this.task.dueDate).toISOString().split('T')[0] : undefined
     };
   }
 
@@ -60,6 +60,7 @@ export class TaskItemComponent implements OnInit {
       return;
     }
 
+    console.log('Sending update request:', this.editingTask);
     this.taskService.updateTask(this.task.id, this.editingTask).subscribe({
       next: (updatedTask: TaskItem) => {
         this.task = updatedTask;
@@ -68,7 +69,16 @@ export class TaskItemComponent implements OnInit {
       },
       error: (error: any) => {
         console.error('Error updating task:', error);
-        alert('Failed to update task');
+        // Show detailed error message from backend
+        let errorMessage = 'Failed to update task';
+        if (error.error && typeof error.error === 'string') {
+          errorMessage = error.error;
+        } else if (error.error && error.error.message) {
+          errorMessage = error.error.message;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        alert(errorMessage);
       }
     });
   }
@@ -111,6 +121,16 @@ export class TaskItemComponent implements OnInit {
       },
       error: (error: any) => {
         console.error('Error updating task status:', error);
+        // Show detailed error message
+        let errorMessage = 'Failed to change status';
+        if (error.error && typeof error.error === 'string') {
+          errorMessage = error.error;
+        } else if (error.error && error.error.message) {
+          errorMessage = error.error.message;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        alert(errorMessage);
       }
     });
   }
@@ -141,7 +161,7 @@ export class TaskItemComponent implements OnInit {
     }
   }
 
-  formatDate(date: Date | undefined): string {
+  formatDate(date: Date | string | undefined): string {
     if (!date) return 'No due date';
     return new Date(date).toLocaleDateString();
   }
