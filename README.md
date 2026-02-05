@@ -241,6 +241,3 @@ For issues or questions, please refer to:
 - [Angular Documentation](https://angular.io/docs)
 - [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
 
-## License
-
-This project is provided as an educational example.
